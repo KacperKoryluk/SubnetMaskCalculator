@@ -5,11 +5,6 @@ import java.lang.*;
 public class Methods 
 {
 	
-	public static void main (String[] args)
-	{
-		System.out.println(calculateSubnetAddress("192.168.1.54", 1, "255.255.255.0"));
-		System.out.println(calculateBroadcastAddress(calculateSubnetAddress("192.168.1.54", 1, "255.255.255.0"), "255.255.255.0"));
-	}
 	
 	
 	public static String binaryAddition(String s1, String s2) {
