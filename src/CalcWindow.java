@@ -26,6 +26,10 @@ public class CalcWindow {
 	private int parameter;
 	private JTextField textField;
 	private JTextField textField_1;
+	private JTextField txtCidr;
+	private JTextField txtAmountOfHosts;
+	private JTextField textField_2;
+	private JTextField textField_3;
 
 	/**
 	 * Launch the application.
@@ -74,7 +78,8 @@ public class CalcWindow {
 				
 				textField.setText(Methods.calculateSubnetAddress(inputAddress, parameter, subnetMask));
 				textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, parameter, subnetMask), subnetMask));
-				
+				textField_2.setText("/"+Methods.getCIDR(subnetMask));
+				textField_3.setText(Methods.amountOfHosts(Methods.getCIDR(subnetMask)));
 				
 			}
 		});
@@ -148,6 +153,40 @@ public class CalcWindow {
 		textField_1.setColumns(10);
 		textField_1.setBounds(129, 137, 173, 20);
 		frame.getContentPane().add(textField_1);
+		
+		txtCidr = new JTextField();
+		txtCidr.setText("CIDR");
+		txtCidr.setHorizontalAlignment(SwingConstants.CENTER);
+		txtCidr.setForeground(Color.BLACK);
+		txtCidr.setEditable(false);
+		txtCidr.setColumns(10);
+		txtCidr.setBounds(10, 168, 109, 20);
+		frame.getContentPane().add(txtCidr);
+		
+		txtAmountOfHosts = new JTextField();
+		txtAmountOfHosts.setText("Amount of hosts");
+		txtAmountOfHosts.setHorizontalAlignment(SwingConstants.CENTER);
+		txtAmountOfHosts.setForeground(Color.BLACK);
+		txtAmountOfHosts.setEditable(false);
+		txtAmountOfHosts.setColumns(10);
+		txtAmountOfHosts.setBounds(10, 199, 109, 20);
+		frame.getContentPane().add(txtAmountOfHosts);
+		
+		textField_2 = new JTextField();
+		textField_2.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_2.setForeground(Color.BLACK);
+		textField_2.setEditable(false);
+		textField_2.setColumns(10);
+		textField_2.setBounds(129, 168, 173, 20);
+		frame.getContentPane().add(textField_2);
+		
+		textField_3 = new JTextField();
+		textField_3.setHorizontalAlignment(SwingConstants.CENTER);
+		textField_3.setForeground(Color.BLACK);
+		textField_3.setEditable(false);
+		textField_3.setColumns(10);
+		textField_3.setBounds(129, 199, 173, 20);
+		frame.getContentPane().add(textField_3);
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);

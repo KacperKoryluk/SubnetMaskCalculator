@@ -1,10 +1,66 @@
 import java.util.*;
 import java.util.regex.Pattern;
 import java.lang.*;
+import java.math.*;
 
 public class Methods 
 {
 	
+	
+	public static String getCIDR (String subnetMask)
+	{
+		int ones = 0;
+		
+		String[] subnetChoppedMask = subnetMask.split(Pattern.quote("."));
+		Integer[] subnetIntMask = new Integer[4];
+		String[] binaryChoppedMask = new String[4];
+		
+		
+		for (int i = 0; i < 4; i++)
+		{
+			
+				subnetIntMask[i] = Integer.parseInt(subnetChoppedMask[i]);
+				binaryChoppedMask[i] = Integer.toBinaryString(subnetIntMask[i]);
+				if (binaryChoppedMask[i].length()<8)
+				{
+					for (int j = binaryChoppedMask[i].length(); j < 8; j++)
+					{
+						binaryChoppedMask[i] = "0" + binaryChoppedMask[i];
+					}
+				}
+			
+		}
+		
+		
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < binaryChoppedMask[i].length(); j++)
+			{
+				
+				if(binaryChoppedMask[i].charAt(j)=='1') 
+				{
+					ones++;
+				}
+			}
+		}
+		
+		StringBuilder CIDR = new StringBuilder("");
+		
+	
+		CIDR.append(Integer.toString(ones));
+		
+		return CIDR.toString();
+	}
+	
+	
+	public static String amountOfHosts(String CIDR)
+	{
+		Double amount = Math.pow(2, 32 - Integer.parseInt(CIDR)) - 2;
+		long temp = Math.round(amount);
+		String amountString = Long.toString(temp);
+		
+		return amountString;
+	}
 	
 	
 	public static String binaryAddition(String s1, String s2) {
