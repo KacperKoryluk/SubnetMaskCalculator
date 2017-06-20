@@ -233,14 +233,10 @@ public class Methods
 			}
 		}
 		
-		System.out.println(mask);
-		System.out.println(newMask);
-		System.out.println(address);
 		
 		
 		
 		String outputBinary = Methods.binaryAddition(address.toString(), newMask.toString());
-		System.out.println(outputBinary);
 		StringBuilder[] chopped = new StringBuilder[4];
 		for (int j = 0; j < 4; j++)
 		{
