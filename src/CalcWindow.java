@@ -4,14 +4,13 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
-import javax.swing.JComboBox;
-import java.awt.List;
-import java.awt.Choice;
-import javax.swing.JTextArea;
 import java.awt.Color;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class CalcWindow {
 
@@ -23,13 +22,18 @@ public class CalcWindow {
 	private JTextField txtBroadcastAddress;
 	private String subnetMask;
 	private String inputAddress;
-	private int parameter;
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField txtCidr;
 	private JTextField txtAmountOfHosts;
 	private JTextField textField_2;
 	private JTextField textField_3;
+	private JTextField txtAddress;
+	private String aboutProgram = "Description: Simple Subnet calculator. \nTakes IP address and subnet mask as an input and provides you with \n" +
+								  "infromation about subnet address, broadcast address, CIDR and maximum amount of hosts. \n"+
+								  "Author: Kacper Koryluk \n" +
+								  "Date: 22.06.2017 \n";
+								  
 
 	/**
 	 * Launch the application.
@@ -42,6 +46,7 @@ public class CalcWindow {
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
+					
 				}
 			}
 		});
@@ -76,36 +81,26 @@ public class CalcWindow {
 				subnetMask=inputMaskField.getText().trim();
 				inputAddress=inputAddressField.getText().trim();
 				
-				textField.setText(Methods.calculateSubnetAddress(inputAddress, parameter, subnetMask));
-				textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, parameter, subnetMask), subnetMask));
+				try
+				{
+				textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
+				textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
 				textField_2.setText("/"+Methods.getCIDR(subnetMask));
 				textField_3.setText(Methods.amountOfHosts(Methods.getCIDR(subnetMask)));
+				}catch(Exception e)
+				{
+					textField.setText("Invalid input!");
+					textField_1.setText("Invalid input!");
+					textField_2.setText("Invalid input!");
+					textField_3.setText("Invalid input!");
+				}
 				
 			}
 		});
 		btnNewButton.setBounds(10, 66, 89, 23);
 		frame.getContentPane().add(btnNewButton);
 		
-		String[] comboBoxChoices = { "Subnet Address", "Regular Address"};
-		JComboBox comboBox = new JComboBox(comboBoxChoices);
-		comboBox.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) 
-			{
-				JComboBox cb = (JComboBox) e.getSource();
-				String currentChoice = (String) cb.getSelectedItem();
-				
-				if (currentChoice=="Subnet Address")
-				{
-					parameter = 0;
-				}
-				if (currentChoice=="Regular Address")
-				{
-					parameter = 1;
-				}
-			}
-		});
-		comboBox.setBounds(10, 11, 146, 20);
-		frame.getContentPane().add(comboBox);
+		
 		
 		inputMaskField = new JTextField();
 		inputMaskField.setColumns(10);
@@ -188,7 +183,27 @@ public class CalcWindow {
 		textField_3.setBounds(129, 199, 173, 20);
 		frame.getContentPane().add(textField_3);
 		
+		txtAddress = new JTextField();
+		txtAddress.setText("Address");
+		txtAddress.setHorizontalAlignment(SwingConstants.LEFT);
+		txtAddress.setEditable(false);
+		txtAddress.setColumns(10);
+		txtAddress.setBounds(10, 11, 146, 20);
+		frame.getContentPane().add(txtAddress);
+		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);
+		
+		JMenu mnHelp = new JMenu("Help");
+		menuBar.add(mnHelp);
+		
+		JMenuItem mntmAbout = new JMenuItem("About");
+		mntmAbout.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				JOptionPane.showMessageDialog(null, aboutProgram);
+			}
+		});
+		mnHelp.add(mntmAbout);
 	}
 }

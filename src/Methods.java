@@ -1,7 +1,4 @@
-import java.util.*;
 import java.util.regex.Pattern;
-import java.lang.*;
-import java.math.*;
 
 public class Methods 
 {
@@ -90,16 +87,11 @@ public class Methods
 	    return String.valueOf(outputSum);
 	}
 
-	public static String calculateSubnetAddress(String inputAddress, int parameter, String subnetMask)
+	public static String calculateSubnetAddress(String inputAddress, String subnetMask)
 	{
 	
 		
-		if (parameter == 0)
-		{
-			return inputAddress;
-		}
-		else
-		{
+
 			String[] splittedAddress = inputAddress.split(Pattern.quote("."));
 			Integer[] splittedIntAddress = new Integer[4];
 			for (int i = 0; i < splittedAddress.length; i++)
@@ -188,10 +180,13 @@ public class Methods
 			for (int i = 0; i < 4; i++)
 			{
 				outputSubnetAddress.append(Integer.toString(outputInt[i]));
-				outputSubnetAddress.append(".");
+				if (i!=3)
+				{
+					outputSubnetAddress.append(".");
+				}
 			}
 			return outputSubnetAddress.toString();
-		}
+		
 		
 	
 		
@@ -317,8 +312,10 @@ public class Methods
 		{
 			
 			output.append(Integer.toString(choppedInt[i]));
-			
-			output.append(".");
+			if (i!=3)
+			{
+				output.append(".");
+			}
 		}
 		
 		
