@@ -11,13 +11,13 @@ import java.awt.event.ActionEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
+import javax.swing.JComboBox;
 
 public class CalcWindow {
 
 	private JFrame frame;
 	private JTextField inputAddressField;
 	private JTextField inputMaskField;
-	private JTextField txtMask;
 	private JTextField txtNetworkAddress;
 	private JTextField txtBroadcastAddress;
 	private String subnetMask;
@@ -31,9 +31,14 @@ public class CalcWindow {
 	private JTextField txtAddress;
 	private String aboutProgram = "Description: Simple Subnet calculator. \nTakes IP address and subnet mask as an input and provides you with \n" +
 								  "infromation about subnet address, broadcast address, CIDR and maximum amount of hosts. \n"+
+								  "It also takes CIDR or desired amount of hosts as other arguments(available in combo box) \n"+
+								  "It provides information about subnet mask and CIDR or amount of hosts(depending on choice) \n "+
 								  "Author: Kacper Koryluk \n" +
 								  "Date: 22.06.2017 \n";
 								  
+	private String[] comboBoxOptions = {"Subnet Mask", "CIDR", "Amount of hosts"};
+	
+	private String currentlySelectedOption;
 
 	/**
 	 * Launch the application.
@@ -78,21 +83,66 @@ public class CalcWindow {
 		{
 			public void actionPerformed(ActionEvent arg0) 
 			{
-				subnetMask=inputMaskField.getText().trim();
-				inputAddress=inputAddressField.getText().trim();
 				
-				try
+				if (currentlySelectedOption == "Subnet Mask")
 				{
-				textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
-				textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
-				textField_2.setText("/"+Methods.getCIDR(subnetMask));
-				textField_3.setText(Methods.amountOfHosts(Methods.getCIDR(subnetMask)));
-				}catch(Exception e)
+					subnetMask=inputMaskField.getText().trim();
+					inputAddress=inputAddressField.getText().trim();
+				
+					try
+					{
+					textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
+					textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
+					textField_2.setText("/"+Methods.getCIDR(subnetMask));
+					textField_3.setText(Methods.amountOfHosts(Methods.getCIDR(subnetMask)));
+					}catch(Exception e)
+					{
+						textField.setText("Invalid input!");
+						textField_1.setText("Invalid input!");
+						textField_2.setText("Invalid input!");
+						textField_3.setText("Invalid input!");
+					}
+				}
+				
+				if (currentlySelectedOption == "CIDR")
 				{
-					textField.setText("Invalid input!");
-					textField_1.setText("Invalid input!");
-					textField_2.setText("Invalid input!");
-					textField_3.setText("Invalid input!");
+					subnetMask=Methods.CIDRtoMask(inputMaskField.getText().trim());
+					inputAddress=inputAddressField.getText().trim();
+				
+					try
+					{
+					textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
+					textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
+					textField_2.setText(subnetMask);
+					textField_3.setText(Methods.amountOfHosts(Methods.getCIDR(subnetMask)));
+					}catch(Exception e)
+					{
+						textField.setText("Invalid input!");
+						textField_1.setText("Invalid input!");
+						textField_2.setText("Invalid input!");
+						textField_3.setText("Invalid input!");
+					}
+				}
+				
+				
+				if (currentlySelectedOption == "Amount of hosts")
+				{
+					subnetMask=Methods.CIDRtoMask(Methods.whichMask(inputMaskField.getText().trim()));
+					inputAddress=inputAddressField.getText().trim();
+				
+					try
+					{
+					textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
+					textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
+					textField_2.setText(Methods.getCIDR(subnetMask));
+					textField_3.setText(subnetMask);
+					}catch(Exception e)
+					{
+						textField.setText("Invalid input!");
+						textField_1.setText("Invalid input!");
+						textField_2.setText("Invalid input!");
+						textField_3.setText("Invalid input!");
+					}
 				}
 				
 			}
@@ -106,14 +156,6 @@ public class CalcWindow {
 		inputMaskField.setColumns(10);
 		inputMaskField.setBounds(166, 40, 136, 20);
 		frame.getContentPane().add(inputMaskField);
-		
-		txtMask = new JTextField();
-		txtMask.setHorizontalAlignment(SwingConstants.LEFT);
-		txtMask.setEditable(false);
-		txtMask.setText("Subnet Mask");
-		txtMask.setBounds(10, 40, 146, 20);
-		frame.getContentPane().add(txtMask);
-		txtMask.setColumns(10);
 		
 		txtNetworkAddress = new JTextField();
 		txtNetworkAddress.setHorizontalAlignment(SwingConstants.CENTER);
@@ -190,6 +232,36 @@ public class CalcWindow {
 		txtAddress.setColumns(10);
 		txtAddress.setBounds(10, 11, 146, 20);
 		frame.getContentPane().add(txtAddress);
+		
+		JComboBox comboBox = new JComboBox(comboBoxOptions);
+		comboBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) 
+			{
+				currentlySelectedOption = (String)comboBox.getSelectedItem();
+				
+				if (currentlySelectedOption == "Subnet Mask")
+				{
+					txtCidr.setText("CIDR");
+					txtAmountOfHosts.setText("Amount of hosts");
+				}
+				if (currentlySelectedOption == "CIDR")
+				{
+					txtCidr.setText("Subnet Mask");
+					txtAmountOfHosts.setText("Amount of hosts");
+				}
+				if (currentlySelectedOption == "Amount of hosts")
+				{
+					txtCidr.setText("CIDR");
+					txtAmountOfHosts.setText("Subnet Mask");
+				}
+				
+				
+			}
+		});
+		comboBox.setBounds(10, 40, 146, 20);
+		frame.getContentPane().add(comboBox);
+		comboBox.setSelectedIndex(0);
+		
 		
 		JMenuBar menuBar = new JMenuBar();
 		frame.setJMenuBar(menuBar);

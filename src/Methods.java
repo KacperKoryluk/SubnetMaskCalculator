@@ -60,6 +60,99 @@ public class Methods
 	}
 	
 	
+	/**
+	 * Function returns CIDR (without "/" character) of a mask which covers desired amount of hosts.
+	 * @param hostAmount
+	 * @return
+	 */
+	public static String whichMask (String hostAmount)
+	{
+		Double[] hostValues = new Double[31];
+		
+		for (int i = 1; i < 31; i++)
+		{
+			hostValues[i] = Math.pow(2,  32 - (i)) - 2;
+		}
+		
+		for (int i = 30; i > 0; i--)
+		{
+			if (Integer.parseInt(hostAmount) <= hostValues[i])
+			{
+				int CIDR = i;
+				return Integer.toString(CIDR);
+			}
+		}
+		
+		return "No mask found for provided input!";
+	}
+	
+	/**
+	 * Converts given CIDR to a subnet mask.
+	 * @param CIDR
+	 * @return
+	 */
+	
+	public static String CIDRtoMask(String CIDR)
+	{
+		
+		if (CIDR.charAt(0)=='/')
+		{
+			CIDR = CIDR.substring(1,CIDR.length());
+		}
+		
+		if (Integer.parseInt(CIDR) < 0 || Integer.parseInt(CIDR) > 30)
+		{
+			return "Invalid input!";
+		}
+		
+		int amountOfOnes = Integer.parseInt(CIDR);
+		
+		StringBuilder maskConstructor = new StringBuilder("");
+		
+		for (int i = 0; i < amountOfOnes; i++)
+		{
+			maskConstructor.append('1');
+		}
+		
+		for (int i = maskConstructor.length(); i < 32; i++)
+		{
+			maskConstructor.append('0');
+		}
+		
+		
+		
+		String[] choppedMask = new String[4];
+		
+		
+		for (int i = 0; i < 4; i++)
+		{
+			choppedMask[i] = maskConstructor.substring(i*8, i*8+8);
+		}
+
+			
+		int[] choppedIntMask = new int[4];
+		
+		for (int i = 0; i < 4; i++)
+		{
+			choppedIntMask[i] = Integer.parseInt(choppedMask[i], 2);
+		}
+		
+				
+		StringBuilder finishedMask = new StringBuilder("");
+		
+		for (int i = 0; i < 4; i++)
+		{
+			finishedMask.append(Integer.toString(choppedIntMask[i]));
+			if (i != 3)
+			{
+				finishedMask.append('.');
+			}
+		}
+		
+		return finishedMask.toString();
+		
+	}
+	
 	public static String binaryAddition(String s1, String s2) {
 	    if (s1 == null || s2 == null) return "";
 	    int first = s1.length() - 1;
