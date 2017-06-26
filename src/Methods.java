@@ -100,7 +100,7 @@ public class Methods
 			CIDR = CIDR.substring(1,CIDR.length());
 		}
 		
-		if (Integer.parseInt(CIDR) < 0 || Integer.parseInt(CIDR) > 30)
+		if (Integer.parseInt(CIDR) <= 0 || Integer.parseInt(CIDR) > 30)
 		{
 			return "Invalid input!";
 		}
