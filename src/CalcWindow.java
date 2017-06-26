@@ -86,11 +86,12 @@ public class CalcWindow {
 				
 				if (currentlySelectedOption == "Subnet Mask")
 				{
-					subnetMask=inputMaskField.getText().trim();
-					inputAddress=inputAddressField.getText().trim();
+					
 				
 					try
 					{
+						subnetMask=inputMaskField.getText().trim();
+						inputAddress=inputAddressField.getText().trim();
 					textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
 					textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
 					textField_2.setText("/"+Methods.getCIDR(subnetMask));
@@ -106,11 +107,12 @@ public class CalcWindow {
 				
 				if (currentlySelectedOption == "CIDR")
 				{
-					subnetMask=Methods.CIDRtoMask(inputMaskField.getText().trim());
-					inputAddress=inputAddressField.getText().trim();
+					
 				
 					try
 					{
+						subnetMask=Methods.CIDRtoMask(inputMaskField.getText().trim());
+						inputAddress=inputAddressField.getText().trim();
 					textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
 					textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
 					textField_2.setText(subnetMask);
@@ -127,11 +129,12 @@ public class CalcWindow {
 				
 				if (currentlySelectedOption == "Amount of hosts")
 				{
-					subnetMask=Methods.CIDRtoMask(Methods.whichMask(inputMaskField.getText().trim()));
-					inputAddress=inputAddressField.getText().trim();
+					
 				
 					try
 					{
+						subnetMask=Methods.CIDRtoMask(Methods.whichMask(inputMaskField.getText().trim()));
+						inputAddress=inputAddressField.getText().trim();
 					textField.setText(Methods.calculateSubnetAddress(inputAddress, subnetMask));
 					textField_1.setText(Methods.calculateBroadcastAddress(Methods.calculateSubnetAddress(inputAddress, subnetMask), subnetMask));
 					textField_2.setText(Methods.getCIDR(subnetMask));
