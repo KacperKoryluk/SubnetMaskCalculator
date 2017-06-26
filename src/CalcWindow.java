@@ -236,6 +236,7 @@ public class CalcWindow {
 		txtAddress.setBounds(10, 11, 146, 20);
 		frame.getContentPane().add(txtAddress);
 		
+		@SuppressWarnings({ "rawtypes", "unchecked" })
 		JComboBox comboBox = new JComboBox(comboBoxOptions);
 		comboBox.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) 
@@ -257,6 +258,12 @@ public class CalcWindow {
 					txtCidr.setText("CIDR");
 					txtAmountOfHosts.setText("Subnet Mask");
 				}
+				
+				
+				textField.setText("");
+				textField_1.setText("");
+				textField_2.setText("");
+				textField_3.setText("");
 				
 				
 			}
